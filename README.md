@@ -3,11 +3,18 @@
 
 # Installation
 
-Run:
+To build:
 
 ```shell
 make # to build
 make submission # to build the zip
+```
+
+To generate report:
+
+```shell
+pip install -r requirements.txt
+python3 make-report.py # generates report in `doc/`
 ```
 
 # Coding
