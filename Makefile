@@ -30,27 +30,29 @@ BIN_DIR = bin
 SOURCES = $(foreach s, $(RAW_SOURCES), $(SOURCE_DIR)/$(s))
 
 all: $(SOURCES)
-	 if hash python3 &> /dev/null ; \
-	 then \
-		python3 -m compileall -q src ; \
-	 else \
-		python -m compileall -q src ; \
-	 fi
-	rm -rf $(BIN_DIR)
-	mkdir -p $(BIN_DIR)
-	cp -a src/__pycache__/. bin
-	for file in bin/* ; \
+	@if hash python3 &> /dev/null ; \
+		then \
+			python3 -m compileall -q src ; \
+		else \
+			python -m compileall -q src ; \
+	fi
+	@rm -rf $(BIN_DIR)
+	@mkdir -p $(BIN_DIR)
+	@cp -a src/__pycache__/. bin
+	@for file in bin/* ; \
 	do \
 		mv -f $$file $${file%%.*}.pyc; \
 	done
-	rm -rf src/__pycache__/
+	@rm -rf src/__pycache__/
 
 submission: all
-	rm -f *.zip
-	echo ""
-	read -p "Enter Team Name (No spaces, '_', '/', '*'): " teamName; \
-	 echo ""; \
-	 zip -rqq s_$${teamName}.zip $(SOURCE_DIR) $(BIN_DIR)
+	@rm -f *.zip
+	@python3 make-report.py
+	@echo ""
+	@read -p "Enter Team Name (No spaces, '_', '/', '*'): " teamName; \
+		echo ""; \
+		zip -9rqq s_$${teamName}.zip $(SOURCE_DIR) $(BIN_DIR)
 
 run:
-	java -jar bin/Sudoku.jar
+	@python3 bin/Main.pyc MRV LCV FC
+	@# @java -jar bin/Sudoku.jar

@@ -7,6 +7,7 @@ import copy
     Represents the trail of changes made. This allows backtracking to occur.
 """
 
+
 class Trail:
 
     # ==================================================================
@@ -19,21 +20,21 @@ class Trail:
     # Constructor
     # ==================================================================
 
-    def __init__ ( self ):
-        self.trailStack  = []
+    def __init__(self):
+        self.trailStack = []
         self.trailMarker = []
 
     # ==================================================================
     # Accessors
     # ==================================================================
 
-    def size ( self ):
-        return len( self.trailStack )
+    def size(self):
+        return len(self.trailStack)
 
-    def getPushCount ( self ):
+    def getPushCount(self):
         return Trail.numPush
 
-    def getUndoCount ( self ):
+    def getUndoCount(self):
         return Trail.numUndo
 
     # ==================================================================
@@ -41,8 +42,8 @@ class Trail:
     # ==================================================================
 
     # Places a marker in the trail
-    def placeTrailMarker ( self ):
-        self.trailMarker.append( len( self.trailStack ) )
+    def placeTrailMarker(self):
+        self.trailMarker.append(len(self.trailStack))
 
     """
         Before you assign a variable in constraint propagation,
@@ -50,26 +51,29 @@ class Trail:
         backtrack trail. This way if the path you are on fails,
         you can restore propagated domains correctly.
     """
-    def push ( self, v ):
+
+    def push(self, v):
         Trail.numPush += 1
-        domainCopy = Domain.Domain( [i for i in v.getValues()] )
+        domainCopy = Domain.Domain([i for i in v.getValues()])
         vPair = [v, domainCopy]
         self.trailStack.append(vPair)
 
     # Pops and restores variables on the trail until the last trail marker
-    def undo ( self ):
+    def undo(self):
         Trail.numUndo += 1
-        targetSize = self.trailMarker.pop() # targetSize target position on the trail to backtrack to
+        targetSize = (
+            self.trailMarker.pop()
+        )  # targetSize target position on the trail to backtrack to
         size = len(self.trailStack)
         while size > targetSize:
             vPair = self.trailStack.pop()
             v = vPair[0]
-            v.setDomain( vPair[1] )
-            v.setModified( False )
+            v.setDomain(vPair[1])
+            v.setModified(False)
             v.unassign()
             size -= 1
 
     # Clears the trail
-    def clear ( self ):
+    def clear(self):
         self.trailStack = []
         self.trailMarker = []

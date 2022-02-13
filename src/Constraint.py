@@ -5,35 +5,36 @@ import Variable
     Used to ensure none of the variables contained in the constraint have the same assignment.
 """
 
+
 class Constraint:
 
     # ==================================================================
     # Constructors
     # ==================================================================
 
-    def __init__ ( self ):
+    def __init__(self):
         self.vars = []
 
     # ==================================================================
     # Modifiers
     # ==================================================================
 
-    def addVariable ( self, v ):
-        self.vars.append( v )
+    def addVariable(self, v):
+        self.vars.append(v)
 
     # ==================================================================
     # Accessors
     # ==================================================================
 
-    def size ( self ):
+    def size(self):
         return len(self.vars)
 
     # Returns true if v is in the constraint, false otherwise
-    def contains ( self, v ):
+    def contains(self, v):
         return v in self.vars
 
     # Returns whether or not the a variable in the constraint has been modified
-    def isModified ( self ):
+    def isModified(self):
         for var in self.vars:
             if var.isModified():
                 return True
@@ -41,7 +42,7 @@ class Constraint:
         return False
 
     # Returns true if constraint is consistent, false otherwise
-    def isConsistent ( self ):
+    def isConsistent(self):
         for var in self.vars:
             if not var.isAssigned():
                 continue
@@ -50,7 +51,10 @@ class Constraint:
                 if var == otherVar:
                     continue
 
-                if otherVar.isAssigned() and otherVar.getAssignment() == var.getAssignment():
+                if (
+                    otherVar.isAssigned()
+                    and otherVar.getAssignment() == var.getAssignment()
+                ):
                     return False
 
         return True
@@ -59,7 +63,7 @@ class Constraint:
     # String representation
     # ==================================================================
 
-    def __str__ ( self ):
+    def __str__(self):
         output = "{"
         delim = ""
 
