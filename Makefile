@@ -1,4 +1,4 @@
-# ======================================================================
+# =======================================================================
 # FILE:        Makefile
 #
 # AUTHOR:      Abdullah Younis
@@ -12,8 +12,8 @@
 #              - make submission - creates the the submission, you will
 #                                  submit.
 #
-#              - Don't make changes to this file.
-# ======================================================================
+#              - Don't make changes to this file unless you took CS 143A.
+# =======================================================================
 
 RAW_SOURCES = \
 	Main.py\
@@ -55,4 +55,3 @@ submission: all
 
 run:
 	@python3 bin/Main.pyc MRV LCV FC
-	@# @java -jar bin/Sudoku.jar
