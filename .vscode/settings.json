@@ -1,6 +1,5 @@
 {
-  "python.formatting.provider": "black",
   "code-runner.executorMapByGlob": {
-    "*": "make && echo 'sugokuAI' | make submission && make run && echo"
+    "*": "make run && make && make submission && echo"
   }
 }

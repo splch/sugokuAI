@@ -38,10 +38,7 @@ all: $(SOURCES)
 submission: all
 	@rm -f *.zip
 	@python3 make-report.py
-	@echo ""
-	@read -p "Enter Team Name (No spaces, '_', '/', '*'): " teamName; \
-		echo ""; \
-		zip -9rqq s_$${teamName}.zip $(SOURCE_DIR) $(BIN_DIR)
+	@zip -9rqq s_sugokuAI.zip $(SOURCE_DIR) $(BIN_DIR)
 
 run:
-	@python3 bin/Main.pyc MRV LCV FC
+	@python3 src/Main.py MRV LCV FC

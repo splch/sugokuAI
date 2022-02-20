@@ -1,5 +1,5 @@
 *.zip
 .DS_Store
+
 bin/
 __pycache__/
-
