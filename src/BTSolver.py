@@ -116,7 +116,24 @@ class BTSolver:
     """
 
     def norvigCheck(self):
-        return ({}, False)
+        self.forwardChecking()
+        checks = {}
+        for constraint in self.network.constraints:
+            counter = {}
+            for var in constraint.vars:
+                for val in var.domain.values:
+                    if val in counter:
+                        counter[val] += 1
+                    else:
+                        counter[val] = 1
+            for domain_val, count in counter.items():
+                if count == 1:
+                    for var in constraint.vars:
+                        if not var.isAssigned() and var.domain.contains(domain_val):
+                            self.trail.push(var)
+                            var.assignValue(domain_val)
+                            checks[var] = domain_val
+        return (checks, self.network.isConsistent())
 
     """
          Optional TODO: Implement your own advanced Constraint Propagation
@@ -160,13 +177,42 @@ class BTSolver:
         Part 2 TODO: Implement the Minimum Remaining Value Heuristic
                        with Degree Heuristic as a Tie Breaker
 
-        Return: The unassigned variable with the smallest domain and affecting the  most unassigned neighbors.
+        Return: The unassigned variable with the smallest domain and affecting the most unassigned neighbors.
                 If there are multiple variables that have the same smallest domain with the same number of unassigned neighbors, add them to the list of Variables.
                 If there is only one variable, return the list of size 1 containing that variable.
     """
 
     def MRVwithTieBreaker(self):
-        return None
+        if self.getMRV():
+            smol = self.getMRV().domain.size()
+            smol_vars = []
+            for v in self.network.variables:
+                if not v.isAssigned() and v.size() == smol:
+                    smol_vars.append(v)
+
+            if len(smol_vars) in {0, 1}:
+                return smol_vars
+            else:  # tie breaker
+                max_constraints = 0
+                chonky_vars = []  # lots of constraints
+                for var in smol_vars:
+                    unassigned = self.numOfUnassignedNeighbors(var)
+                    if unassigned > max_constraints:
+                        max_constraints = unassigned
+                for var in smol_vars:
+                    if self.numOfUnassignedNeighbors(var) == max_constraints:
+                        chonky_vars.append(var)
+                return chonky_vars
+        else:
+            return [None]
+
+    def numOfUnassignedNeighbors(self, var):
+        neighbors = self.network.getNeighborsOfVariable(var)
+        num = 0
+        for n in neighbors:
+            if not n.isAssigned():
+                num += 1
+        return num
 
     """
          Optional TODO: Implement your own advanced Variable Heuristic

@@ -41,4 +41,7 @@ submission: all
 	@zip -9rqq s_sugokuAI.zip $(SOURCE_DIR) $(BIN_DIR)
 
 run:
-	@python3 src/Main.py MRV LCV FC
+	@python3 src/Main.py FC MRV LCV
+	@python3 src/Main.py FC MAD LCV
+	@python3 src/Main.py NOR MRV LCV
+	@python3 src/Main.py NOR MAD LCV
