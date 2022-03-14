@@ -53,7 +53,7 @@ def main():
 
     if file == "":
         sudokudata = SudokuBoard.SudokuBoard(3, 3, 7)
-        print(sudokudata)
+        # print(sudokudata)
 
         solver = BTSolver.BTSolver(sudokudata, trail, val_sh, var_sh, cc)
         if cc in ["forwardChecking", "norvigCheck", "tournCC"]:
@@ -82,7 +82,8 @@ def main():
         numSolutions = 0
         for f in listOfBoards:
             print("Running board: " + str(f))
-            sudokudata = SudokuBoard.SudokuBoard(filepath=os.path.join(file, f))
+            sudokudata = SudokuBoard.SudokuBoard(
+                filepath=os.path.join(file, f))
 
             solver = BTSolver.BTSolver(sudokudata, trail, val_sh, var_sh, cc)
             if cc in ["forwardChecking", "norvigCheck", "tournCC"]:

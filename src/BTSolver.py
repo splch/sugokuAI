@@ -183,36 +183,20 @@ class BTSolver:
     """
 
     def MRVwithTieBreaker(self):
+        # unassigned = lambda v: len(
+        #     [n for n in self.network.getNeighborsOfVariable(v) if not n.isAssigned()])
+        def unassigned(v): return len(
+            [n for n in self.network.getNeighborsOfVariable(v) if not n.isAssigned()])
         if self.getMRV():
-            smol = self.getMRV().domain.size()
-            smol_vars = []
-            for v in self.network.variables:
-                if not v.isAssigned() and v.size() == smol:
-                    smol_vars.append(v)
-
+            smol_vars = [var for var in self.network.variables if not var.isAssigned(
+            ) and var.size() == self.getMRV().domain.size()]
             if len(smol_vars) in {0, 1}:
                 return smol_vars
             else:  # tie breaker
-                max_constraints = 0
-                chonky_vars = []  # lots of constraints
-                for var in smol_vars:
-                    unassigned = self.numOfUnassignedNeighbors(var)
-                    if unassigned > max_constraints:
-                        max_constraints = unassigned
-                for var in smol_vars:
-                    if self.numOfUnassignedNeighbors(var) == max_constraints:
-                        chonky_vars.append(var)
-                return chonky_vars
+                max_constraints = max([unassigned(var) for var in smol_vars])
+                return [var for var in smol_vars if unassigned(var) == max_constraints]
         else:
             return [None]
-
-    def numOfUnassignedNeighbors(self, var):
-        neighbors = self.network.getNeighborsOfVariable(var)
-        num = 0
-        for n in neighbors:
-            if not n.isAssigned():
-                num += 1
-        return num
 
     """
          Optional TODO: Implement your own advanced Variable Heuristic
