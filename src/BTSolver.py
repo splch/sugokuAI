@@ -183,9 +183,7 @@ class BTSolver:
     """
 
     def MRVwithTieBreaker(self):
-        # unassigned = lambda v: len(
-        #     [n for n in self.network.getNeighborsOfVariable(v) if not n.isAssigned()])
-        def unassigned(v): return len(
+        unassigned = lambda v: len(
             [n for n in self.network.getNeighborsOfVariable(v) if not n.isAssigned()])
         if self.getMRV():
             smol_vars = [var for var in self.network.variables if not var.isAssigned(
